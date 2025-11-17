@@ -39,3 +39,14 @@ body {
 .overflow-x-hidden::-webkit-scrollbar {
   display: none;
 }
+
+/* Esconder scrollbar no menu mobile */
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
