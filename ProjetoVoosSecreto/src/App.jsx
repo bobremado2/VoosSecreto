@@ -7,6 +7,7 @@ function App() {
   // Estado e ref para o carrossel
   const carouselRef = useRef(null)
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [tipoViagem, setTipoViagem] = useState('nacional') // 'nacional' ou 'internacional'
 
   // CONFIGURAÇÕES - MODIFIQUE AQUI
   // ================================
@@ -17,46 +18,125 @@ function App() {
   // COMPARAÇÕES DE PREÇOS - Modifique aqui os destinos e preços
   const comparacoes = [
     {
+      origem: "São Paulo",
       destino: "Rio de Janeiro",
-      imagem: "/assets/destinos/rio.jpg", // Coloque suas imagens na pasta public/assets/destinos/
+      imagem: "/imagens/riodejaneiro.png",
       precoVoosSecretos: "R$ 450",
       precoGoogle: "R$ 680",
-      economia: "R$ 230"
+      economia: "R$ 230",
+      desconto: "34%"
     },
     {
+      origem: "Rio de Janeiro",
       destino: "São Paulo",
-      imagem: "/assets/destinos/sao-paulo.jpg",
+      imagem: "/imagens/saopaulo.png",
       precoVoosSecretos: "R$ 380",
       precoGoogle: "R$ 550",
-      economia: "R$ 170"
+      economia: "R$ 170",
+      desconto: "31%"
     },
     {
-      destino: "Salvador",
-      imagem: "/assets/destinos/salvador.jpg",
+      origem: "Rio de Janeiro",
+      destino: "Florianópolis",
+      imagem: "/imagens/florianopolis.png",
       precoVoosSecretos: "R$ 520",
       precoGoogle: "R$ 750",
-      economia: "R$ 230"
+      economia: "R$ 230",
+      desconto: "31%"
     },
     {
-      destino: "Florianópolis",
-      imagem: "/assets/destinos/florianopolis.jpg",
-      precoVoosSecretos: "R$ 480",
-      precoGoogle: "R$ 720",
-      economia: "R$ 240"
+      origem: "Belo Horizonte",
+      destino: "Salvador",
+      imagem: "/imagens/salvador.png",
+      precoVoosSecretos: "R$ 420",
+      precoGoogle: "R$ 620",
+      economia: "R$ 200",
+      desconto: "32%"
     },
     {
+      origem: "Porto Alegre",
+      destino: "Recife",
+      imagem: "/imagens/Recife.png",
+      precoVoosSecretos: "R$ 580",
+      precoGoogle: "R$ 850",
+      economia: "R$ 270",
+      desconto: "32%"
+    },
+    {
+      origem: "São Paulo",
       destino: "Fortaleza",
-      imagem: "/assets/destinos/fortaleza.jpg",
+      imagem: "/imagens/fortaleza.png",
       precoVoosSecretos: "R$ 550",
       precoGoogle: "R$ 820",
-      economia: "R$ 270"
+      economia: "R$ 270",
+      desconto: "33%"
+    }
+  ]
+
+  // VIAGENS INTERNACIONAIS
+  const comparacoesInternacionais = [
+    {
+      origem: "São Paulo",
+      destino: "Nova York",
+      imagem: "/imagens/nova york.png",
+      precoVoosSecretos: "R$ 2.200",
+      precoGoogle: "R$ 3.400",
+      economia: "R$ 1.200",
+      desconto: "35%"
     },
     {
-      destino: "Recife",
-      imagem: "/assets/destinos/recife.jpg",
-      precoVoosSecretos: "R$ 490",
-      precoGoogle: "R$ 710",
-      economia: "R$ 220"
+      origem: "Rio de Janeiro",
+      destino: "Paris",
+      imagem: "/imagens/paris.png",
+      precoVoosSecretos: "R$ 2.800",
+      precoGoogle: "R$ 4.200",
+      economia: "R$ 1.400",
+      desconto: "33%"
+    },
+    {
+      origem: "São Paulo",
+      destino: "Buenos Aires",
+      imagem: "/imagens/buenos-aires.png",
+      precoVoosSecretos: "R$ 980",
+      precoGoogle: "R$ 1.500",
+      economia: "R$ 520",
+      desconto: "35%"
+    },
+    {
+      origem: "Rio de Janeiro",
+      destino: "Orlando",
+      imagem: "/imagens/orlando.png",
+      precoVoosSecretos: "R$ 1.950",
+      precoGoogle: "R$ 2.950",
+      economia: "R$ 1.000",
+      desconto: "34%"
+    },
+    {
+      origem: "Brasília",
+      destino: "Roma",
+      imagem: "/imagens/roma.png",
+      precoVoosSecretos: "R$ 2.600",
+      precoGoogle: "R$ 3.900",
+      economia: "R$ 1.300",
+      desconto: "33%"
+    },
+    {
+      origem: "Recife",
+      destino: "Cancún",
+      imagem: "/imagens/cancun.png",
+      precoVoosSecretos: "R$ 1.850",
+      precoGoogle: "R$ 2.800",
+      economia: "R$ 950",
+      desconto: "34%"
+    },
+    {
+      origem: "São Paulo",
+      destino: "Istambul",
+      imagem: "/imagens/istambul.png",
+      precoVoosSecretos: "R$ 2.400",
+      precoGoogle: "R$ 3.600",
+      economia: "R$ 1.200",
+      desconto: "33%"
     }
   ]
 
@@ -68,77 +148,68 @@ function App() {
     }
   }
 
+  // Função para scroll para o topo
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   // Funções para navegar o carrossel
   const scrollCarousel = (direction) => {
     if (!carouselRef.current) return
     
     const cardWidth = 280 // w-64 + gap = 256px + 24px = 280px (mobile)
     const scrollAmount = cardWidth * (window.innerWidth >= 640 ? 1.5 : 1) // Scroll mais no desktop
+    const listaAtual = tipoViagem === 'nacional' ? comparacoes : comparacoesInternacionais
     
     if (direction === 'next') {
       carouselRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' })
-      setCurrentIndex(prev => (prev + 1) % comparacoes.length)
+      setCurrentIndex(prev => (prev + 1) % listaAtual.length)
     } else {
       carouselRef.current.scrollBy({ left: -scrollAmount, behavior: 'smooth' })
-      setCurrentIndex(prev => (prev - 1 + comparacoes.length) % comparacoes.length)
+      setCurrentIndex(prev => (prev - 1 + listaAtual.length) % listaAtual.length)
     }
   }
 
-  // Efeito para criar loop infinito e inicializar posição
+  // Resetar carrossel quando mudar tipo de viagem
   useEffect(() => {
-    const carousel = carouselRef.current
-    if (!carousel) return
-
-    // Inicializar no meio (segunda cópia) para permitir scroll em ambas direções
-    const cardWidth = 280 // w-64 + gap
-    const initialPosition = cardWidth * comparacoes.length
-    carousel.scrollTo({ left: initialPosition, behavior: 'auto' })
-
-    const handleScroll = () => {
-      const { scrollLeft } = carousel
-      const singleSetWidth = cardWidth * comparacoes.length
-      
-      // Se passou do final da segunda cópia, volta para o início da segunda cópia
-      if (scrollLeft >= singleSetWidth * 2 - 10) {
-        carousel.scrollTo({ left: singleSetWidth, behavior: 'auto' })
-      }
-      
-      // Se voltou antes do início da segunda cópia, vai para o final da segunda cópia
-      if (scrollLeft <= singleSetWidth - 10) {
-        carousel.scrollTo({ left: singleSetWidth * 2 - cardWidth, behavior: 'auto' })
-      }
+    if (carouselRef.current) {
+      carouselRef.current.scrollTo({ left: 0, behavior: 'smooth' })
+      setCurrentIndex(0)
     }
+  }, [tipoViagem])
 
-    carousel.addEventListener('scroll', handleScroll)
-    return () => carousel.removeEventListener('scroll', handleScroll)
-  }, [comparacoes.length])
   
   // TEXTO DOS DEPOIMENTOS - Modifique aqui os depoimentos fictícios
   const depoimentos = [
     {
-      nome: "Mariana S.",
-      cidade: "Curitiba - PR",
-      texto: "Consegui ir para o Chile pagando metade do preço graças ao Voos Secretos. As promoções chegam rápido e são realmente boas."
+      nome: "Matheus P.",
+      cidade: "São Paulo – SP",
+      texto: "Mano… eu tava de boas e caiu uma promo pra Recife. Não pensei duas vezes. Já virei fã do Voos Secretos, os caras avisam muito rápido."
     },
     {
-      nome: "João Pedro M.",
-      cidade: "São Paulo - SP",
-      texto: "Nunca mais perdi uma promoção relâmpago! O serviço é excelente e sempre mando para amigos. Vale muito a pena!"
+      nome: "Júlia A.",
+      cidade: "Blumenau – SC",
+      texto: "Eu já tinha seguido várias páginas de promo e nunca achava nada que prestasse. No Voos Secretos, pelo menos uma vez por semana aparece algo que realmente vale a pena."
     },
     {
-      nome: "Ana Paula R.",
-      cidade: "Rio de Janeiro - RJ",
-      texto: "Encontrei passagem para Europa por um preço incrível. A curadoria deles é perfeita, só enviam ofertas realmente boas."
+      nome: "Everton L.",
+      cidade: "Vitória – ES",
+      texto: "No começo eu fiquei meio receoso, mas todos os links que eles mandam vão direto pro site da companhia ou agência conhecida. Isso me deixou muito mais seguro pra comprar sem medo."
     },
     {
-      nome: "Carlos Eduardo L.",
-      cidade: "Belo Horizonte - MG",
-      texto: "Economizei mais de R$ 2.000 em uma viagem que estava planejando. O alerta chegou justo na hora certa!"
+      nome: "Camila R.",
+      cidade: "João Pessoa – PB",
+      texto: "O que eu mais gosto é que eu não preciso ficar caçando passagem no Google o dia inteiro. Eu só deixo o grupo rolando e quando chega uma notificação boa, eu abro e vejo. Simples e rápido."
     },
     {
-      nome: "Fernanda C.",
-      cidade: "Porto Alegre - RS",
-      texto: "Melhor investimento que fiz este ano. As promoções são exclusivas e sempre valem a pena. Recomendo demais!"
+      nome: "Thiago M.",
+      cidade: "Goiânia – GO",
+      texto: "Achei muito prático porque os links não passam por sites estranhos. Clico e já vou direto pra companhia aérea. Fora que economiza um tempo absurdo, porque as melhores promoções aparecem ali antes mesmo de eu pensar em procurar."
+    },
+    {
+      nome: "Lara D.",
+      cidade: "Pelotas – RS",
+      texto: "Eu sempre perdia promoção porque nunca tinha paciência de ficar pesquisando. Agora só espero o alerta e pronto, quando aparece algo bom eu já compro. Parece até cheat de viagem."
     }
   ]
 
@@ -158,9 +229,17 @@ function App() {
           <div className="flex items-center justify-between flex-wrap gap-3">
             {/* Logo */}
             <div className="flex items-center">
-              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white whitespace-nowrap">
-                Voos Secretos
-              </h1>
+              <button 
+                onClick={scrollToTop}
+                className="focus:outline-none"
+                aria-label="Voltar ao topo"
+              >
+                <img 
+                  src="/VOOS.png" 
+                  alt="Voos Secretos" 
+                  className="h-12 sm:h-16 md:h-20 w-auto"
+                />
+              </button>
             </div>
 
             {/* Menu Desktop */}
@@ -286,28 +365,14 @@ function App() {
               </a>
             </div>
 
-            {/* Espaço para Imagens - Substitua o placeholder pela sua imagem */}
+            {/* Espaço para Imagens */}
             <div className="fade-in">
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl overflow-hidden border border-white/20">
-                {/* IMAGEM PRINCIPAL - Substitua o src pela sua imagem */}
                 <img 
-                  src="/assets/hero-image.jpg" 
+                  src="/imageminicial.png" 
                   alt="Voos Secretos" 
-                  className="w-full h-auto object-cover"
-                  onError={(e) => {
-                    // Fallback caso a imagem não exista
-                    e.target.style.display = 'none';
-                    e.target.nextElementSibling.style.display = 'block';
-                  }}
+                  className="w-full h-auto object-cover rounded-2xl"
                 />
-                {/* Placeholder SVG caso a imagem não exista */}
-                <div className="p-8 hidden">
-                  <svg className="w-full h-auto max-h-96 mx-auto" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M200 50L350 150L200 250L50 150L200 50Z" stroke="#F4A460" strokeWidth="4" fill="none"/>
-                    <circle cx="200" cy="150" r="30" fill="#F4A460"/>
-                    <path d="M100 100L300 100M100 200L300 200" stroke="#F4A460" strokeWidth="2"/>
-                  </svg>
-                </div>
               </div>
             </div>
           </div>
@@ -455,6 +520,32 @@ function App() {
             Veja a diferença de preço entre o Voos Secretos e o Google. Economia real em cada destino!
           </p>
 
+          {/* Seletor de tipo de viagem */}
+          <div className="flex justify-center mb-8">
+            <div className="inline-flex bg-gray-100 rounded-lg p-1 gap-2">
+              <button
+                onClick={() => setTipoViagem('nacional')}
+                className={`px-6 py-2 rounded-md font-semibold transition-all duration-200 ${
+                  tipoViagem === 'nacional'
+                    ? 'bg-primary-dark text-white shadow-md'
+                    : 'text-gray-600 hover:text-primary-dark'
+                }`}
+              >
+                🇧🇷 Nacional
+              </button>
+              <button
+                onClick={() => setTipoViagem('internacional')}
+                className={`px-6 py-2 rounded-md font-semibold transition-all duration-200 ${
+                  tipoViagem === 'internacional'
+                    ? 'bg-primary-dark text-white shadow-md'
+                    : 'text-gray-600 hover:text-primary-dark'
+                }`}
+              >
+                ✈️ Internacional
+              </button>
+            </div>
+          </div>
+
           {/* Carrossel horizontal de comparações com setas */}
           <div className="relative">
             {/* Seta esquerda */}
@@ -486,54 +577,63 @@ function App() {
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
               <div className="flex gap-4 sm:gap-6">
-                {/* Duplicar itens para efeito infinito */}
-                {[...comparacoes, ...comparacoes, ...comparacoes].map((comparacao, index) => (
+                {/* Itens do carrossel */}
+                {(tipoViagem === 'nacional' ? comparacoes : comparacoesInternacionais).map((comparacao, index) => (
                   <div 
-                    key={`${comparacao.destino}-${index}`}
-                    className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-200 border border-gray-100 overflow-hidden flex-shrink-0 w-64 sm:w-72"
+                    key={`${comparacao.origem}-${comparacao.destino}-${index}`}
+                    className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 overflow-hidden flex-shrink-0 w-64 sm:w-72 transform hover:scale-105"
                   >
-                    {/* Imagem do destino - Espaço para imagem da cidade */}
+                    {/* Imagem do destino com badge de desconto */}
                     <div className="relative h-32 sm:h-40 bg-gray-200 overflow-hidden">
                       <img 
                         src={comparacao.imagem} 
                         alt={comparacao.destino}
                         className="w-full h-full object-cover"
                         onError={(e) => {
-                          // Fallback caso a imagem não exista - apenas espaço vazio
                           e.target.style.display = 'none';
                         }}
                       />
+                      {/* Badge de desconto */}
+                      <div className="absolute top-2 right-2 bg-accent text-primary-dark font-bold px-3 py-1 rounded-full text-xs sm:text-sm shadow-lg">
+                        -{comparacao.desconto}
+                      </div>
                     </div>
 
                     {/* Conteúdo do card */}
                     <div className="p-4">
-                      <h3 className="text-lg font-bold text-primary-dark mb-3 text-center">
-                        {comparacao.destino}
-                      </h3>
-
-                      {/* Comparação de preços - lado a lado */}
-                      <div className="grid grid-cols-2 gap-2 mb-3">
-                        {/* Preço Voos Secretos */}
-                        <div className="bg-accent/10 rounded-lg p-2 border-l-2 border-accent">
-                          <p className="text-xs text-gray-600 mb-1">Voos Secretos:</p>
-                          <p className="text-base sm:text-lg font-bold text-primary-dark">
-                            {comparacao.precoVoosSecretos}
-                          </p>
-                        </div>
-
-                        {/* Preço Google */}
-                        <div className="bg-gray-100 rounded-lg p-2 border-l-2 border-gray-400">
-                          <p className="text-xs text-gray-600 mb-1">Google:</p>
-                          <p className="text-base sm:text-lg font-bold text-gray-700 line-through">
-                            {comparacao.precoGoogle}
-                          </p>
+                      {/* Rota com ícone de avião */}
+                      <div className="mb-4">
+                        <div className="flex items-center justify-center gap-2">
+                          <span className="text-sm font-semibold text-gray-600">{comparacao.origem}</span>
+                          <svg className="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                          </svg>
+                          <span className="text-sm font-semibold text-gray-600">{comparacao.destino}</span>
                         </div>
                       </div>
 
-                      {/* Economia */}
-                      <div className="bg-green-50 rounded-lg p-2 border-l-2 border-green-500">
-                        <p className="text-xs text-green-700 mb-1 font-semibold">Economia:</p>
-                        <p className="text-sm sm:text-base font-bold text-green-600">
+                      {/* Preço principal destacado */}
+                      <div className="bg-gradient-to-br from-accent/20 to-accent/10 rounded-lg p-3 mb-3 border-2 border-accent">
+                        <p className="text-xs text-gray-600 mb-1 text-center">Preço Voos Secretos</p>
+                        <p className="text-2xl sm:text-3xl font-bold text-primary-dark text-center">
+                          {comparacao.precoVoosSecretos}
+                        </p>
+                      </div>
+
+                      {/* Comparação */}
+                      <div className="space-y-2 mb-3">
+                        <div className="flex items-center justify-between bg-gray-50 rounded-lg p-2">
+                          <span className="text-xs text-gray-600">Preço no Google:</span>
+                          <span className="text-sm font-semibold text-gray-500 line-through">
+                            {comparacao.precoGoogle}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Economia destacada */}
+                      <div className="bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg p-3 text-center">
+                        <p className="text-xs font-semibold mb-1 opacity-90">Você economiza</p>
+                        <p className="text-xl font-bold">
                           {comparacao.economia}
                         </p>
                       </div>
@@ -574,7 +674,7 @@ function App() {
       <section id="depoimentos" className="py-12 sm:py-16 md:py-24 bg-white">
         <div className="container mx-auto px-3 sm:px-4 lg:px-6">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-3 sm:mb-4 text-primary-dark">
-            O que nossos clientes dizem
+            Feedback de quem já está no Voos Secretos
           </h2>
           <p className="text-center text-gray-600 mb-8 sm:mb-12 max-w-2xl mx-auto text-sm sm:text-base px-2">
             Histórias reais de pessoas que economizaram muito com nossas promoções secretas.
@@ -797,7 +897,7 @@ function App() {
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
             Pronto para receber as próximas promoções secretas?
           </h2>
-          <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 text-gray-200 max-w-2xl mx-auto px-2">
+          <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 max-w-2xl mx-auto px-2" style={{ color: '#0A2647' }}>
             Entre no nosso grupo exclusivo do WhatsApp e comece a economizar hoje mesmo.
           </p>
 
@@ -882,12 +982,18 @@ function App() {
               <h4 className="font-semibold mb-4">Legal</h4>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <a href="#" className="text-gray-300 hover:text-accent transition-colors">
+                  <a 
+                    href="/termos-de-uso.html"
+                    className="text-gray-300 hover:text-accent transition-colors"
+                  >
                     Termos de Uso
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-gray-300 hover:text-accent transition-colors">
+                  <a 
+                    href="/politica-de-privacidade.html"
+                    className="text-gray-300 hover:text-accent transition-colors"
+                  >
                     Política de Privacidade
                   </a>
                 </li>

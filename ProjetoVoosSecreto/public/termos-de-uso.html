@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Termos de Uso - Voos Secretos</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png" />
+    <link rel="manifest" href="/assets/favicon/site.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            dark: '#0A2647',
+                            DEFAULT: '#144272',
+                        },
+                        accent: {
+                            DEFAULT: '#F4A460',
+                            light: '#FFD700',
+                        },
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Poppins', 'system-ui', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-white font-sans">
+    <header class="bg-primary-dark shadow-lg">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <a href="/" class="flex items-center">
+                    <img src="/VOOS.png" alt="Voos Secretos" class="h-12 sm:h-16 md:h-20 w-auto">
+                </a>
+                <a href="/" class="text-white hover:text-accent transition-colors">Voltar ao início</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="py-12 sm:py-16 md:py-24">
+        <div class="container mx-auto px-4 lg:px-6 max-w-4xl">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-8 text-primary-dark">
+                Termos de Uso
+            </h1>
+            <p class="text-sm sm:text-base text-gray-600 mb-8 text-center">
+                <strong>Última atualização:</strong> <span id="data-atualizacao"></span>
+            </p>
+            
+            <div class="space-y-6 text-gray-700">
+                <div>
+                    <h2 class="text-xl font-semibold text-primary-dark mb-3">1. Aceitação dos Termos</h2>
+                    <p class="text-sm sm:text-base leading-relaxed">
+                        Ao acessar e usar o serviço Voos Secretos, você concorda em cumprir e estar vinculado aos seguintes termos e condições de uso. Se você não concordar com alguma parte destes termos, não deve usar nosso serviço.
+                    </p>
+                </div>
+
+                <div>
+                    <h2 class="text-xl font-semibold text-primary-dark mb-3">2. Descrição do Serviço</h2>
+                    <p class="text-sm sm:text-base leading-relaxed">
+                        O Voos Secretos é um serviço gratuito que monitora e compartilha promoções de passagens aéreas através de alertas por WhatsApp ou e-mail. Nosso objetivo é informar sobre ofertas de voos disponíveis em companhias aéreas e agências parceiras.
+                    </p>
+                </div>
+
+                <div>
+                    <h2 class="text-xl font-semibold text-primary-dark mb-3">3. Uso do Serviço</h2>
+                    <p class="text-sm sm:text-base leading-relaxed">
+                        Você concorda em usar o serviço apenas para fins legais e de acordo com estes termos. Você não deve usar o serviço para qualquer propósito ilegal ou não autorizado.
+                    </p>
+                </div>
+
+                <div>
+                    <h2 class="text-xl font-semibold text-primary-dark mb-3">4. Links para Terceiros</h2>
+                    <p class="text-sm sm:text-base leading-relaxed">
+                        Os links de promoções compartilhados direcionam para sites de companhias aéreas e agências parceiras. Não somos responsáveis pelo conteúdo, políticas de privacidade ou práticas de sites de terceiros.
+                    </p>
+                </div>
+
+                <div>
+                    <h2 class="text-xl font-semibold text-primary-dark mb-3">5. Isenção de Responsabilidade</h2>
+                    <p class="text-sm sm:text-base leading-relaxed">
+                        O Voos Secretos atua apenas como intermediário de informações. Não somos responsáveis pela disponibilidade, preços, condições ou qualidade dos serviços oferecidos pelas companhias aéreas ou agências. Todas as transações são realizadas diretamente entre você e a companhia aérea/agência.
+                    </p>
+                </div>
+
+                <div>
+                    <h2 class="text-xl font-semibold text-primary-dark mb-3">6. Modificações dos Termos</h2>
+                    <p class="text-sm sm:text-base leading-relaxed">
+                        Reservamos o direito de modificar estes termos a qualquer momento. As alterações entrarão em vigor imediatamente após a publicação. É sua responsabilidade revisar periodicamente estes termos.
+                    </p>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center">
+                <a href="/" class="inline-block bg-primary-dark text-white px-6 py-3 rounded-lg hover:bg-primary-DEFAULT transition-colors">
+                    Voltar ao início
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-primary-dark text-white py-6">
+        <div class="container mx-auto px-4 text-center text-sm text-gray-400">
+            <p>&copy; <span id="ano-atual"></span> Voos Secretos. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('data-atualizacao').textContent = new Date().toLocaleDateString('pt-BR');
+        document.getElementById('ano-atual').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
+
