@@ -13,7 +13,7 @@ function App() {
   // ================================
   
   // LINK DO WHATSAPP - Altere aqui o número/links dos botões CTA
-  const WHATSAPP_LINK = "https://wa.me/5511947430954?text=Olá!%20Quero%20receber%20promoções%20de%20voos%20secretos!"
+  const WHATSAPP_LINK = "https://chat.whatsapp.com/I0lLy5YYq2hEYQsJqU5k4H"
   
   // COMPARAÇÕES DE PREÇOS - Modifique aqui os destinos e preços
   const comparacoes = [
@@ -21,55 +21,55 @@ function App() {
       origem: "São Paulo",
       destino: "Rio de Janeiro",
       imagem: "/imagens/riodejaneiro.png",
-      precoVoosSecretos: "R$ 450",
-      precoGoogle: "R$ 680",
-      economia: "R$ 230",
-      desconto: "34%"
+      precoVoosSecretos: "R$ 217",
+      precoGoogle: "R$ 608",
+      economia: "R$ 391",
+      desconto: "64%"
     },
     {
       origem: "Rio de Janeiro",
       destino: "São Paulo",
       imagem: "/imagens/saopaulo.png",
-      precoVoosSecretos: "R$ 380",
-      precoGoogle: "R$ 550",
-      economia: "R$ 170",
-      desconto: "31%"
+      precoVoosSecretos: "R$ 198",
+      precoGoogle: "R$ 567",
+      economia: "R$ 369",
+      desconto: "65%"
     },
     {
       origem: "Rio de Janeiro",
       destino: "Florianópolis",
       imagem: "/imagens/florianopolis.png",
-      precoVoosSecretos: "R$ 520",
-      precoGoogle: "R$ 750",
-      economia: "R$ 230",
-      desconto: "31%"
+      precoVoosSecretos: "R$ 329",
+      precoGoogle: "R$ 912",
+      economia: "R$ 583",
+      desconto: "64%"
     },
     {
       origem: "Belo Horizonte",
       destino: "Salvador",
       imagem: "/imagens/salvador.png",
-      precoVoosSecretos: "R$ 420",
-      precoGoogle: "R$ 620",
-      economia: "R$ 200",
-      desconto: "32%"
+      precoVoosSecretos: "R$ 347",
+      precoGoogle: "R$ 798",
+      economia: "R$ 451",
+      desconto: "57%"
     },
     {
       origem: "Porto Alegre",
       destino: "Recife",
       imagem: "/imagens/Recife.png",
-      precoVoosSecretos: "R$ 580",
-      precoGoogle: "R$ 850",
-      economia: "R$ 270",
-      desconto: "32%"
+      precoVoosSecretos: "R$ 418",
+      precoGoogle: "R$ 1.028",
+      economia: "R$ 610",
+      desconto: "59%"
     },
     {
       origem: "São Paulo",
       destino: "Fortaleza",
       imagem: "/imagens/fortaleza.png",
-      precoVoosSecretos: "R$ 550",
-      precoGoogle: "R$ 820",
-      economia: "R$ 270",
-      desconto: "33%"
+      precoVoosSecretos: "R$ 497",
+      precoGoogle: "R$ 1.180",
+      economia: "R$ 683",
+      desconto: "58%"
     }
   ]
 
@@ -843,8 +843,8 @@ function App() {
               {openFaq === 3 && (
                 <div className="px-4 sm:px-6 py-3 sm:py-4 text-gray-600 border-t border-gray-100 text-sm sm:text-base">
                   <p>
-                    Enviamos apenas quando encontramos promoções realmente boas. Não fazemos spam! 
-                    Geralmente são de 2 a 4 ofertas por semana, mas pode variar conforme a disponibilidade de promoções genuínas no mercado.
+                    Enviamos ofertas todos os dias, sempre que aparece algo realmente bom. 
+                    Nossa curadoria monitora o tempo todo e só dispara alertas com descontos fortes para você aproveitar rápido, sem spam.
                   </p>
                 </div>
               )}
