@@ -13,7 +13,7 @@ function App() {
   // ================================
   
   // LINK DO WHATSAPP - Altere aqui o número/links dos botões CTA
-  const WHATSAPP_LINK = "https://wa.me/5511999999999?text=Olá!%20Quero%20receber%20promoções%20de%20voos%20secretos!"
+  const WHATSAPP_LINK = "https://wa.me/5511947430954?text=Olá!%20Quero%20receber%20promoções%20de%20voos%20secretos!"
   
   // COMPARAÇÕES DE PREÇOS - Modifique aqui os destinos e preços
   const comparacoes = [
