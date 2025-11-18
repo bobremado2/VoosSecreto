@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 
 function App() {
   // Estado para controlar o FAQ acordeão
@@ -8,6 +8,11 @@ function App() {
   const carouselRef = useRef(null)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [tipoViagem, setTipoViagem] = useState('nacional') // 'nacional' ou 'internacional'
+  
+  // Estados para controle de swipe/touch
+  const touchStartX = useRef(null) // Posição X inicial do toque
+  const touchEndX = useRef(null) // Posição X final do toque
+  const isDragging = useRef(false) // Flag para saber se está arrastando
 
   // CONFIGURAÇÕES - MODIFIQUE AQUI
   // ================================
@@ -154,7 +159,8 @@ function App() {
   }
 
   // Funções para navegar o carrossel
-  const scrollCarousel = (direction) => {
+  // Memoizada com useCallback para manter referência estável e incluir tipoViagem como dependência
+  const scrollCarousel = useCallback((direction) => {
     if (!carouselRef.current) return
     
     const cardWidth = 280 // w-64 + gap = 256px + 24px = 280px (mobile)
@@ -168,7 +174,75 @@ function App() {
       carouselRef.current.scrollBy({ left: -scrollAmount, behavior: 'smooth' })
       setCurrentIndex(prev => (prev - 1 + listaAtual.length) % listaAtual.length)
     }
-  }
+  }, [tipoViagem])
+
+  // ============================================
+  // HANDLERS PARA SWIPE/TOUCH NO CARROSSEL
+  // ============================================
+  
+  /**
+   * Handler para quando o usuário inicia o toque
+   * Captura a posição X inicial do toque
+   * Memoizado com useCallback para manter referência estável
+   */
+  const handleTouchStart = useCallback((e) => {
+    // Usa touch ou pointer events (para suporte a mouse também)
+    const touch = e.touches ? e.touches[0] : e
+    touchStartX.current = touch.clientX
+    isDragging.current = false // Reset flag de arrasto
+  }, [])
+
+  /**
+   * Handler para quando o usuário move o dedo durante o toque
+   * Detecta se está arrastando horizontalmente
+   * Memoizado com useCallback para manter referência estável
+   */
+  const handleTouchMove = useCallback((e) => {
+    if (touchStartX.current === null) return
+    
+    const touch = e.touches ? e.touches[0] : e
+    const currentX = touch.clientX
+    const diffX = Math.abs(currentX - touchStartX.current)
+    
+    // Se o movimento horizontal for maior que 10px, considera como arrasto
+    // Isso evita conflito com rolagem vertical
+    if (diffX > 10) {
+      isDragging.current = true
+    }
+  }, [])
+
+  /**
+   * Handler para quando o usuário solta o toque
+   * Calcula a direção do swipe e navega o carrossel se necessário
+   * Memoizado com useCallback incluindo scrollCarousel como dependência
+   */
+  const handleTouchEnd = useCallback((e) => {
+    if (touchStartX.current === null) return
+    
+    // Usa touch ou pointer events
+    const touch = e.changedTouches ? e.changedTouches[0] : e
+    touchEndX.current = touch.clientX
+    
+    // Calcula a distância do swipe
+    const distance = touchStartX.current - touchEndX.current
+    const swipeThreshold = 50 // Limite mínimo de pixels para considerar um swipe
+    
+    // Só processa swipe se foi um arrasto horizontal (não rolagem vertical)
+    if (isDragging.current && Math.abs(distance) > swipeThreshold) {
+      if (distance > 0) {
+        // Swipe para a esquerda = próximo slide
+        scrollCarousel('next')
+      } else {
+        // Swipe para a direita = slide anterior
+        scrollCarousel('prev')
+      }
+    }
+    
+    // Reset dos valores
+    touchStartX.current = null
+    touchEndX.current = null
+    isDragging.current = false
+  }, [scrollCarousel]) // Inclui scrollCarousel como dependência
 
   // Resetar carrossel quando mudar tipo de viagem
   useEffect(() => {
@@ -177,6 +251,34 @@ function App() {
       setCurrentIndex(0)
     }
   }, [tipoViagem])
+
+  // Adicionar event listeners para touch/swipe no carrossel
+  useEffect(() => {
+    const carouselElement = carouselRef.current
+    if (!carouselElement) return
+
+    // Adiciona listeners para touch events (mobile)
+    // Usa { passive: true } para não bloquear rolagem vertical da página
+    carouselElement.addEventListener('touchstart', handleTouchStart, { passive: true })
+    carouselElement.addEventListener('touchmove', handleTouchMove, { passive: true })
+    carouselElement.addEventListener('touchend', handleTouchEnd, { passive: true })
+
+    // Adiciona listeners para pointer events (suporte a mouse e touch)
+    // Útil para dispositivos híbridos (tablets com stylus, etc)
+    carouselElement.addEventListener('pointerdown', handleTouchStart, { passive: true })
+    carouselElement.addEventListener('pointermove', handleTouchMove, { passive: true })
+    carouselElement.addEventListener('pointerup', handleTouchEnd, { passive: true })
+
+    // Cleanup: remove listeners quando componente desmonta ou carousel muda
+    return () => {
+      carouselElement.removeEventListener('touchstart', handleTouchStart)
+      carouselElement.removeEventListener('touchmove', handleTouchMove)
+      carouselElement.removeEventListener('touchend', handleTouchEnd)
+      carouselElement.removeEventListener('pointerdown', handleTouchStart)
+      carouselElement.removeEventListener('pointermove', handleTouchMove)
+      carouselElement.removeEventListener('pointerup', handleTouchEnd)
+    }
+  }, [handleTouchStart, handleTouchMove, handleTouchEnd, tipoViagem]) // Inclui handlers e tipoViagem nas dependências
 
   
   // TEXTO DOS DEPOIMENTOS - Modifique aqui os depoimentos fictícios
